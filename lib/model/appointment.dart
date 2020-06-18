@@ -5,16 +5,22 @@ class Appointment extends WriteAppointment {
   final String clinic; //# the id of Clininc
 
   Appointment(this.id, this.createdAt, this.updatedAt, this.clinic, String name,
-      String medicalHistory, String insuranceType, String timeSlot)
+      String medicalHistory, Insurance insuranceType, String timeSlot)
       : super(name, medicalHistory, insuranceType, timeSlot);
 }
 
 class WriteAppointment {
   final String name;
   final String medicalHistory;
-  final String insuranceType; //todo convert it to enum
+  final Insurance insuranceType; //todo convert it to enum
   final String timeSlot; //#   the id of TimeSlot
 
   WriteAppointment(
       this.name, this.medicalHistory, this.insuranceType, this.timeSlot);
+}
+
+enum Insurance {
+  govermental,
+  basic,
+  benefit,
 }
