@@ -1,0 +1,213 @@
+swagger: "2.0"
+info:
+  description: "Prototype API "
+  version: "0.0.1"
+  title: "Eir Platform"
+# host: "petstore.swagger.io"
+basePath: "/api/v1"
+tags:
+- name: "clinics"
+  description: "Everything about the clinics"
+- name: "appointments"
+  description: "Access to user appointments"
+schemes:
+- "https"
+- "http"`
+paths:
+  /clinics:
+    get:
+      tags:
+      - "clinics"
+      summary: "List all clinics"
+      operationId: "listClinics"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Clinic"
+
+  /clinics/{clinicId}:
+    get:
+      tags:
+      - "clinics"
+      operationId: "getClinicById"
+      produces:
+      - "application/json"
+      summary: Get a clinic by ID
+      parameters:
+        - in: path
+          name: clinicId
+          type: string
+          required: true
+          description: UUID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Clinic"
+        "404":
+          description: "Could not find clinic by provided ID"
+
+  /appointments:
+    get:
+      tags:
+      - "appointments"
+      summary: "List all appointments"
+      operationId: "listAppointments"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Appointment"
+    post:
+      tags:
+      - "appointments"
+      summary: "Creates an appointment"
+      operationId: "createAppointment"
+      parameters:
+        - in: body
+          name: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/WriteAppointment'
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Appointment"
+        "400":
+          description: "Invalid input"
+
+  /appointments/{appointmentId}:
+    get:
+      tags:
+      - "appointments"
+      operationId: "getAppointmentById"
+      produces:
+      - "application/json"
+      summary: Get a clinic by ID
+      parameters:
+        - in: path
+          name: appointmentId
+          type: string
+          required: true
+          description: UUID of the user to get
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Appointment"
+        "404":
+          description: "Could not find clinic by provided ID"
+definitions:
+  Clinic:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      category:
+        type: "string"
+        example: "内科"
+      name:
+        type: "string"
+        example: "doggie"
+      telephone_number:
+        type: "string"
+        example: "09012345678"
+      address:
+        type: "string"
+        example: "香川県高松市"
+      google_map_plus_code:
+        type: "string"
+        example: "82QR+93 Takamatsu, Kagawa"
+      image_url:
+        type: "string"
+        format: "uri"
+        example: "https://lh3.googleusercontent.com/NvAkGU3GUNDuhC0-_wJDk-wzGSZ9fxD8wq7kKYYkUyprgRfYvrDo2mit2UvvcfIEFh822IbJ=w1080-h608-p-no-v0"
+      time_slots:
+        type: "array"
+        items:
+          $ref: "#/definitions/TimeSlot"
+      created_at:
+        type: "string"
+        format: "date"
+      updated_at:
+        type: "string"
+        format: "date"
+
+  TimeSlot:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      clinic_id:
+        type: "string"
+        format: "uuid"
+      start:
+        type: "string"
+        format: "date"
+      end:
+        type: "string"
+        format: "date"
+      created_at:
+        type: "string"
+        format: "date"
+      updated_at:
+        type: "string"
+        format: "date"
+
+  WriteAppointment:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "山田太郎"
+      medical_history:
+        type: "string"
+      insurance_type:
+        type: "string"
+        example: "社会保険"
+      time_slot:
+        $ref: "#/definitions/TimeSlot"
+
+  Appointment:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        example: "山田太郎"
+      medical_history:
+        type: "string"
+      insurance_type:
+        type: "string"
+        example: "社会保険"
+      created_at:
+        type: "string"
+        format: "date"
+      updated_at:
+        type: "string"
+        format: "date"
+      time_slot:
+        $ref: "#/definitions/TimeSlot"
+      clinic:
+        $ref: "#/definitions/Clinic"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
